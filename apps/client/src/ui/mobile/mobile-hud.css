@@ -1,0 +1,352 @@
+/* Canvas-only touch projection of the 1.12 ActionButton and MainMenu micro-button art. */
+.vanillagl-mobile-controls {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.vanillagl-mobile-controls[hidden] { display: none; }
+
+.vanillagl-mobile-controls canvas {
+  display: block;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vanillagl-mobile-stick {
+  position: absolute;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  width: 148px;
+  height: 148px;
+  transition: opacity .16s ease;
+}
+
+.vanillagl-mobile-actions {
+  position: absolute;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: 252px;
+  height: 170px;
+  transition: opacity .16s ease;
+}
+
+.vanillagl-mobile-utility {
+  position: absolute;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(10px, env(safe-area-inset-right));
+  z-index: 2;
+  width: 176px;
+  height: 64px;
+}
+
+/* FloatingChatFrame.xml:748-770 — the stock 32x32 ChatFrameMenuButton. On landscape phones it
+   replaces the full chat surface until explicitly opened, leaving the movement area unobstructed. */
+.vanillagl-mobile-chat-toggle[hidden] { display: none; }
+
+html.vanillagl-phone .vanillagl-mobile-chat-toggle {
+  position: absolute;
+  left: max(8px, env(safe-area-inset-left));
+  bottom: max(154px, calc(env(safe-area-inset-bottom) + 144px));
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+}
+
+html.vanillagl-phone.vanillagl-mobile-chat-collapsed .wow-chat-box {
+  display: none !important;
+}
+
+/* Invisible focus target used only to ask iOS/Android for their software keyboard when a
+   CanvasPanel EditBox is tapped. 16px is deliberate: Safari otherwise zooms the page on focus. */
+.vanillagl-mobile-keyboard-proxy {
+  position: fixed;
+  left: 50%;
+  bottom: max(1px, env(safe-area-inset-bottom));
+  z-index: -1;
+  width: 2px;
+  height: 2px;
+  padding: 0;
+  border: 0;
+  opacity: .01;
+  font-size: 16px;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+/* -------------------------------------------------------------------------
+   Shared phone/tablet behaviour
+   ------------------------------------------------------------------------- */
+html.vanillagl-mobile,
+html.vanillagl-mobile body,
+html.vanillagl-mobile body * {
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.vanillagl-mobile body :is(input, textarea, [contenteditable="true"]) {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+html.vanillagl-mobile canvas { touch-action: none; }
+
+html.vanillagl-mobile body.wow-custom-cursor,
+html.vanillagl-mobile body.wow-custom-cursor * {
+  cursor: auto !important;
+}
+
+/* Opening a real UI panel switches the screen into interaction mode. The quick menu remains
+   available, while locomotion/combat controls stop sitting on top of Bank/Auction/Quest panels. */
+html.vanillagl-mobile-panel-open .vanillagl-mobile-stick,
+html.vanillagl-mobile-panel-open .vanillagl-mobile-actions,
+html.vanillagl-phone.vanillagl-mobile-panel-open .vanillagl-mobile-utility,
+html.vanillagl-phone.vanillagl-mobile-bag-open .vanillagl-mobile-actions {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Phone panels are modal interaction surfaces. Clear informational HUD elements that otherwise
+   cover close buttons, quest text, or item slots; all return immediately when the panel closes. */
+html.vanillagl-phone.vanillagl-mobile-panel-open :is(
+  .wow-minimap, .wow-quest-watch, .wow-buffs, .wow-chat-box, .vanillagl-mobile-chat-toggle
+) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* 384x512 legacy panels: keep their FrameXML coordinate system and scale only their host.
+   VanillaCanvas.pointFromClient() already compensates for the CSS size, so taps remain exact. */
+html.vanillagl-mobile .wow-character-frame,
+html.vanillagl-mobile .wow-spellbook-frame,
+html.vanillagl-mobile .wow-social-frame,
+html.vanillagl-mobile .wow-quest-log-frame,
+html.vanillagl-mobile .wow-item-text-frame,
+html.vanillagl-mobile .wow-bank-frame,
+html.vanillagl-mobile .wow-trade-frame,
+html.vanillagl-mobile .wow-pet-stable-frame,
+html.vanillagl-mobile .wow-petition-frame,
+html.vanillagl-mobile .wow-guild-registrar-frame,
+html.vanillagl-mobile .wow-native-frame.wow-ui-panel:not(.wow-interaction-panel),
+html.vanillagl-mobile .wow-ui-panel:not(.wow-interaction-panel) {
+  left: max(8px, env(safe-area-inset-left)) !important;
+  top: max(8px, env(safe-area-inset-top)) !important;
+  transform: scale(var(--vanillagl-mobile-panel-scale, .8)) !important;
+  transform-origin: top left !important;
+}
+
+/* Large authored panels get their own scale budget rather than being cropped. */
+html.vanillagl-mobile .wow-auction-frame {
+  left: 50% !important;
+  top: max(8px, env(safe-area-inset-top)) !important;
+  transform: translateX(-50%) scale(var(--vanillagl-mobile-wide-scale, .65)) !important;
+  transform-origin: top center !important;
+}
+
+html.vanillagl-mobile .wow-mail-frame {
+  left: 50% !important;
+  top: max(8px, env(safe-area-inset-top)) !important;
+  transform: translateX(-50%) scale(var(--vanillagl-mobile-mail-scale, .7)) !important;
+  transform-origin: top center !important;
+}
+
+html.vanillagl-mobile .wow-tradeskill-frame {
+  left: 50% !important;
+  top: max(8px, env(safe-area-inset-top)) !important;
+  transform: translateX(-50%) scale(var(--vanillagl-mobile-tradeskill-scale, .75)) !important;
+  transform-origin: top center !important;
+}
+
+/* Modern DOM inventory already reflows; let it use the screen instead of shrinking every slot. */
+html.vanillagl-mobile .wow-inventory-panel {
+  left: max(8px, env(safe-area-inset-left)) !important;
+  right: max(8px, env(safe-area-inset-right)) !important;
+  bottom: max(184px, calc(env(safe-area-inset-bottom) + 176px)) !important;
+  width: auto !important;
+  max-height: calc(100dvh - 210px) !important;
+}
+
+html.vanillagl-mobile .wow-inventory-header {
+  min-height: 38px;
+  height: 38px;
+  font-size: 15px;
+}
+html.vanillagl-mobile .wow-inventory-close {
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+}
+html.vanillagl-mobile .wow-inventory-grid {
+  grid-template-columns: repeat(auto-fill, 37px);
+  justify-content: center;
+  gap: 7px;
+}
+html.vanillagl-mobile .wow-inventory-equipment {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Classic individual bag windows cascade from the right. The visible-index variable is maintained
+   by mobile-viewport-layout so closed bags do not leave unusable gaps. */
+html.vanillagl-mobile .wow-container-frame {
+  left: auto !important;
+  top: auto !important;
+  right: calc(max(8px, env(safe-area-inset-right)) + var(--vanillagl-mobile-bag-index, 0) * 22px) !important;
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--vanillagl-mobile-bag-index, 0) * 18px) !important;
+  transform: scale(var(--vanillagl-mobile-bag-scale, .75)) !important;
+  transform-origin: bottom right !important;
+}
+html.vanillagl-mobile .wow-container-title { cursor: default; }
+
+/* Generic HTML interaction panels (confirmations/small NPC dialogs) can use real responsive layout. */
+html.vanillagl-mobile .wow-interaction-panel:not(.wow-native-frame) {
+  left: max(8px, env(safe-area-inset-left)) !important;
+  right: max(8px, env(safe-area-inset-right)) !important;
+  top: max(48px, calc(env(safe-area-inset-top) + 42px)) !important;
+  width: auto !important;
+  max-height: calc(100dvh - 72px) !important;
+  transform: none !important;
+}
+html.vanillagl-mobile .wow-interaction-header { min-height: 38px; height: 38px; }
+html.vanillagl-mobile .wow-interaction-close { width: 30px; height: 30px; line-height: 28px; }
+html.vanillagl-mobile .wow-interaction-body { font-size: 14px; -webkit-overflow-scrolling: touch; }
+html.vanillagl-mobile .wow-interaction-row { min-height: 38px; }
+html.vanillagl-mobile .wow-ui-panel-button,
+html.vanillagl-mobile .wow-interaction-button { min-height: 30px; }
+
+/* Escape/options, bindings and macros are centered flex dialogs. Max-size their canvases directly;
+   CanvasPanel coordinate mapping keeps all controls clickable after this CSS shrink. */
+html.vanillagl-mobile .wow-esc-layer .wow-native-panel-canvas,
+html.vanillagl-mobile .wow-keybinding-layer > .wow-native-panel-canvas,
+html.vanillagl-mobile .wow-macro-layer > .wow-native-panel-canvas {
+  max-width: calc(100vw - 20px) !important;
+  max-height: calc(100dvh - 20px) !important;
+  width: auto !important;
+  height: auto !important;
+}
+html.vanillagl-mobile .wow-esc-dialog--video,
+html.vanillagl-mobile .wow-esc-dialog--interface { transform: none !important; }
+
+/* Touch-friendly scroll and tooltip behaviour. */
+html.vanillagl-mobile :is(.wow-social-list, .wow-char-list, .wow-quest-log-list, .wow-quest-log-detail, .wow-gossip-body, .wow-quest-body, .wow-trainer-list, .wow-inventory-bags) {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+html.vanillagl-mobile .wow-game-tooltip {
+  max-width: min(320px, calc(100vw - 24px));
+  font-size: 13px;
+}
+html.vanillagl-mobile .wow-disconnect-box {
+  min-width: 0;
+  width: min(360px, calc(100vw - 28px));
+  padding: 20px;
+}
+
+/* The world map already performs its own 1024x768 fit in world-map.ts; do not double-scale it. */
+
+/* -------------------------------------------------------------------------
+   Phones
+   ------------------------------------------------------------------------- */
+html.vanillagl-phone .wow-main-menu-bar {
+  display: none !important;
+}
+html.vanillagl-phone .wow-ingame-hud {
+  --wow-effective-ui-scale: var(--vanillagl-mobile-hud-scale, .65);
+}
+html.vanillagl-phone .wow-quest-watch {
+  right: max(6px, env(safe-area-inset-right));
+  top: 216px;
+  max-height: 34vh;
+  overflow: hidden;
+  transform: scale(.86);
+  transform-origin: top right;
+}
+html.vanillagl-phone .wow-chat-box {
+  left: max(8px, env(safe-area-inset-left));
+  bottom: max(178px, calc(env(safe-area-inset-bottom) + 170px));
+  width: min(52vw, 360px);
+  max-height: 28vh;
+}
+html.vanillagl-phone .wow-buffs {
+  top: max(48px, calc(env(safe-area-inset-top) + 40px));
+  right: 202px;
+  max-width: 210px;
+}
+html.vanillagl-phone .wow-buff-icon { width: 28px; height: 28px; }
+html.vanillagl-phone .wow-unit-frame--player { left: -28px; top: max(2px, env(safe-area-inset-top)); }
+html.vanillagl-phone .wow-unit-frame--target { left: auto; right: -28px; top: max(2px, env(safe-area-inset-top)); }
+html.vanillagl-phone .wow-tot-frame { left: auto; right: 74px; top: 48px; transform: scale(.8); transform-origin: top right; }
+html.vanillagl-phone .wow-party-hud { transform: scale(.82); transform-origin: top left; top: 84px; }
+html.vanillagl-phone .wow-pet-hud { transform: scale(.82); transform-origin: top left; }
+html.vanillagl-phone .wow-cast-bar { bottom: max(174px, calc(env(safe-area-inset-bottom) + 164px)); }
+html.vanillagl-phone .wow-pet-action-bar { bottom: max(166px, calc(env(safe-area-inset-bottom) + 156px)); transform: translateX(-50%) scale(.82); transform-origin: bottom center; }
+
+/* The quick menu has its own lane below the player frame in portrait. */
+html.vanillagl-phone .vanillagl-mobile-utility {
+  left: max(8px, env(safe-area-inset-left));
+  right: auto;
+  top: max(80px, calc(env(safe-area-inset-top) + 72px));
+  transform-origin: top left;
+}
+
+/* Landscape phones have enough horizontal space to center the interaction panel between both thumbs. */
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-ingame-hud {
+  --wow-effective-ui-scale: var(--vanillagl-mobile-landscape-hud-scale, .54);
+}
+
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .vanillagl-mobile-stick {
+  transform: scale(var(--vanillagl-mobile-landscape-control-scale, .72));
+  transform-origin: bottom left;
+}
+
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .vanillagl-mobile-actions {
+  transform: scale(var(--vanillagl-mobile-landscape-control-scale, .72));
+  transform-origin: bottom right;
+}
+
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .vanillagl-mobile-utility {
+  left: 50%;
+  top: max(8px, env(safe-area-inset-top));
+  transform: translateX(-50%) scale(.78);
+  transform-origin: top center;
+}
+
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-character-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-spellbook-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-social-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-quest-log-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-item-text-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-bank-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-trade-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-pet-stable-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-petition-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-guild-registrar-frame,
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-native-frame.wow-ui-panel:not(.wow-interaction-panel),
+html.vanillagl-phone[data-vanillagl-orientation="landscape"] .wow-ui-panel:not(.wow-interaction-panel) {
+  left: 50% !important;
+  transform: translateX(-50%) scale(var(--vanillagl-mobile-panel-scale, .7)) !important;
+  transform-origin: top center !important;
+}
+
+@media (orientation: portrait) and (max-width: 700px) {
+  .vanillagl-mobile-stick { width: 116px; height: 116px; }
+  .vanillagl-mobile-actions { transform: scale(.88); transform-origin: bottom right; }
+  .vanillagl-mobile-utility { transform: scale(.9); transform-origin: top right; }
+}
+
+/* -------------------------------------------------------------------------
+   Tablets
+   ------------------------------------------------------------------------- */
+html.vanillagl-tablet .vanillagl-mobile-stick { width: 142px; height: 142px; }
+html.vanillagl-tablet .vanillagl-mobile-actions { transform: scale(1.06); transform-origin: bottom right; }
+html.vanillagl-tablet .wow-main-menu-bar { opacity: .84; pointer-events: auto; }
+html.vanillagl-tablet .wow-inventory-panel { width: min(520px, calc(100vw - 32px)) !important; left: auto !important; }

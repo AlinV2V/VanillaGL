@@ -1,0 +1,67 @@
+{
+  "name": "vanillagl",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "description": "VanillaGL — High-performance 3D Browser MMORPG Engine & Client (TypeScript / Three.js / WebGL2 / WebAudio).",
+  "keywords": [
+    "vanillagl",
+    "threejs",
+    "webgl",
+    "webgl2",
+    "mmorpg",
+    "game-engine",
+    "typescript",
+    "webaudio",
+    "websockets",
+    "bvh-collision",
+    "terrain-rendering",
+    "browser-game"
+  ],
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "server/*"
+  ],
+  "scripts": {
+    "wizard": "node tools/setup-wizard.mjs",
+    "setup": "node --import ./tools/utils/sim/register-ts.mjs tools/setup-assets.ts",
+    "dev": "npm --workspace @vanillagl/client run dev",
+    "play": "node tools/play.mjs",
+    "dev:lan": "node tools/dev/lan-dev.mjs",
+    "build": "npm --workspace @vanillagl/client run build",
+    "preview": "npm --workspace @vanillagl/client run preview",
+    "typecheck": "npm --workspace @vanillagl/client run typecheck",
+    "proxy": "node server/proxy/proxy.mjs",
+    "assets:serve": "node server/assets/server.mjs",
+    "bake:questie-lite": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-questie-lite.ts",
+    "bake:ktx2": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-ktx2.ts",
+    "bake:terrain-arrays": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-terrain-arrays.ts",
+    "bake:ktx2-fallbacks": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/repair-ktx2-fallbacks.ts",
+    "bake:webp": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-webp.ts",
+    "bake:meshopt": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-meshopt.ts",
+    "bake:grass-binary": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/pack-grass-binary.ts",
+    "bake:bvh": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-wmo-bvh.ts",
+    "bake:opus": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-opus.ts",
+    "bake:hashes": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-content-hashes.ts",
+    "bake:catalogs": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/shard-runtime-catalogs.ts",
+    "bake:brotli": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-brotli.ts",
+    "bake:sounds": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-sounds.ts",
+    "bake:performance": "npm run bake:bvh && npm run bake:meshopt && npm run bake:grass-binary -- --all && npm run bake:ktx2 && npm run bake:ktx2-fallbacks && npm run bake:webp && npm run bake:opus && npm run bake:hashes && npm run bake:catalogs && npm run bake:brotli && npm run report:assets",
+    "bake:full": "node --import ./tools/utils/sim/register-ts.mjs tools/bakers/bake-full-world.ts --bake",
+    "report:assets": "node --import ./tools/utils/sim/register-ts.mjs tools/quality/report-assets.ts",
+    "tools:install": "node --import ./tools/utils/sim/register-ts.mjs tools/utils/install-asset-tools.ts"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.176.0",
+    "meshoptimizer": "0.23.0",
+    "vite": "8.1.4"
+  },
+  "dependencies": {
+    "ws": "^8.21.0"
+  }
+}

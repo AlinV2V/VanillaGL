@@ -1,0 +1,14 @@
+{
+  "name": "@vanillagl/proxy",
+  "private": true,
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "description": "WebSocket <-> TCP bridge so the browser client can reach vMaNGOS (realmd/mangosd).",
+  "scripts": {
+    "start": "node proxy.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

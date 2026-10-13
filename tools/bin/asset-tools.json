@@ -1,0 +1,140 @@
+{
+  "schema": "vanillagl.asset-tools/v1",
+  "platforms": {
+    "win32-x64": {
+      "TOKTX": {
+        "version": "4.4.2",
+        "url": "https://github.com/KhronosGroup/KTX-Software/releases/download/v4.4.2/KTX-Software-4.4.2-Windows-x64.exe",
+        "sha256": "1f323b0fec19794f5e6c0425a61d4b1da396872a10be862d105f4f4b2d2957fe",
+        "format": "nsis",
+        "binary": "toktx.exe",
+        "companions": ["ktx.exe"],
+        "versionArgs": ["--version"]
+      },
+      "CWEBP": {
+        "version": "1.6.0",
+        "url": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0-windows-x64.zip",
+        "sha256": "48886f506b21f62e4661f0f4cbfca19800897c385128e8902542d29a950c93f1",
+        "format": "archive",
+        "binary": "cwebp.exe",
+        "versionArgs": ["-version"]
+      },
+      "FFMPEG": {
+        "version": "6.1.1",
+        "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-win32-x64.gz",
+        "sha256": "8883a3dffbd0a16cf4ef95206ea05283f78908dbfb118f73c83f4951dcc06d77",
+        "format": "gzip",
+        "binary": "ffmpeg.exe",
+        "versionArgs": ["-version"]
+      }
+    },
+    "darwin-x64": {
+      "TOKTX": {
+        "version": "4.4.2",
+        "url": "https://github.com/KhronosGroup/KTX-Software/releases/download/v4.4.2/KTX-Software-4.4.2-Darwin-x86_64.pkg",
+        "sha256": "efecc685ab891a6e119a9fdc8cbe038e135f9a367eb2f5d8a059553f947f1fea",
+        "format": "pkg",
+        "binary": "toktx",
+        "companions": ["ktx"],
+        "versionArgs": ["--version"]
+      },
+      "CWEBP": {
+        "version": "1.6.0",
+        "url": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0-mac-x86-64.tar.gz",
+        "sha256": "f112dd83b420ab2a4b27d46610d9827ddf4200216023281de378647ecca31c2a",
+        "format": "archive",
+        "binary": "cwebp",
+        "versionArgs": ["-version"]
+      },
+      "FFMPEG": {
+        "version": "6.1.1",
+        "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-darwin-x64.gz",
+        "sha256": "929b375c1182d956c51f7ac25e0b2b0411fb01f6f407aa15c9758efeb4242106",
+        "format": "gzip",
+        "binary": "ffmpeg",
+        "versionArgs": ["-version"]
+      }
+    },
+    "darwin-arm64": {
+      "TOKTX": {
+        "version": "4.4.2",
+        "url": "https://github.com/KhronosGroup/KTX-Software/releases/download/v4.4.2/KTX-Software-4.4.2-Darwin-arm64.pkg",
+        "sha256": "500bd8f9d63358c3f3a0d83b724c8574436a72c37dc0e4bad90ec1ca38032c3c",
+        "format": "pkg",
+        "binary": "toktx",
+        "companions": ["ktx"],
+        "versionArgs": ["--version"]
+      },
+      "CWEBP": {
+        "version": "1.6.0",
+        "url": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0-mac-arm64.tar.gz",
+        "sha256": "bc6bf84cc70f3f8574fba797d1e4a7dea4feebe9fa4be919f202413ea2b3b8f2",
+        "format": "archive",
+        "binary": "cwebp",
+        "versionArgs": ["-version"]
+      },
+      "FFMPEG": {
+        "version": "6.1.1",
+        "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-darwin-arm64.gz",
+        "sha256": "8923876afa8db5585022d7860ec7e589af192f441c56793971276d450ed3bbfa",
+        "format": "gzip",
+        "binary": "ffmpeg",
+        "versionArgs": ["-version"]
+      }
+    },
+    "linux-x64": {
+      "TOKTX": {
+        "version": "4.4.2",
+        "url": "https://github.com/KhronosGroup/KTX-Software/releases/download/v4.4.2/KTX-Software-4.4.2-Linux-x86_64.tar.bz2",
+        "sha256": "a8781bad05f9624edbf910b7f258cd0a4ba7d3e63b49ecc0a0ab440bf6a0a245",
+        "format": "archive",
+        "binary": "toktx",
+        "companions": ["ktx"],
+        "versionArgs": ["--version"]
+      },
+      "CWEBP": {
+        "version": "1.6.0",
+        "url": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0-linux-x86-64.tar.gz",
+        "sha256": "1c5ffab71efecefa0e3c23516c3a3a1dccb45cc310ae1095c6f14ae268e38067",
+        "format": "archive",
+        "binary": "cwebp",
+        "versionArgs": ["-version"]
+      },
+      "FFMPEG": {
+        "version": "6.1.1",
+        "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-x64.gz",
+        "sha256": "bfe8a8fc511530457b528c48d77b5737527b504a3797a9bc4866aeca69c2dffa",
+        "format": "gzip",
+        "binary": "ffmpeg",
+        "versionArgs": ["-version"]
+      }
+    },
+    "linux-arm64": {
+      "TOKTX": {
+        "version": "4.4.2",
+        "url": "https://github.com/KhronosGroup/KTX-Software/releases/download/v4.4.2/KTX-Software-4.4.2-Linux-arm64.tar.bz2",
+        "sha256": "60382e7b842177b8048bd58ccdc770383f8ef65b94452a25d3afdb55f2405c5a",
+        "format": "archive",
+        "binary": "toktx",
+        "companions": ["ktx"],
+        "versionArgs": ["--version"]
+      },
+      "CWEBP": {
+        "version": "1.6.0",
+        "url": "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.6.0-linux-aarch64.tar.gz",
+        "sha256": "69f5eebe203e0f3942fe37986209a1725741be19c152950a4283b376c95ec798",
+        "format": "archive",
+        "binary": "cwebp",
+        "versionArgs": ["-version"]
+      },
+      "FFMPEG": {
+        "version": "6.1.1",
+        "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-arm64.gz",
+        "sha256": "754a678672298bc68156adff58aa7385a592c2b30b1d0ae8750c45c915c4bac0",
+        "format": "gzip",
+        "binary": "ffmpeg",
+        "versionArgs": ["-version"]
+      }
+    }
+  }
+}

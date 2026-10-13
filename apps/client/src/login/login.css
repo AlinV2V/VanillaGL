@@ -1,0 +1,1194 @@
+@import '/src/login/character-select-glue.css';
+@import '/src/login/character-create-glue.css';
+@import '/src/login/character-select-mobile.css';
+@font-face {
+  font-family: 'Friz Quadrata';
+  src: url('/ui/Fonts/FRIZQT__.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Morpheus';
+  src: url('/ui/Fonts/MORPHEUS.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Base overlay style */
+#glue-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  font-family: 'Friz Quadrata', 'Cinzel', serif;
+  color: #ffd100;
+  user-select: none;
+  pointer-events: none;
+}
+
+.glue-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+/* Common Text Classes */
+.text-gold { color: #ffe600; text-shadow: 1px 1px 2px #000; }
+.text-silver { color: #c7c7c7; text-shadow: 1px 1px 2px #000; }
+.text-blue { color: #4388ff; text-shadow: 1px 1px 2px #000; }
+.text-green { color: #1eff00; text-shadow: 1px 1px 2px #000; }
+
+/* Dialog / Tooltip Frame.
+   NOTE: UI-DialogBox-Border.png is a WoW edge-strip atlas (8 separate corner/edge tiles packed in
+   one image) — it is NOT a CSS 9-slice. Using it as border-image scattered disconnected corner
+   fragments around every dialog. We instead build the vanilla tooltip-style frame in CSS: dark
+   parchment-tinted fill + thin warm-gold rounded border + inner shading. */
+.glue-dialog {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(46, 42, 72, 0.35), rgba(0, 0, 0, 0) 75%),
+    url('/ui/Interface/DialogFrame/UI-DialogBox-Background.png') repeat;
+  background-color: rgba(6, 7, 14, 0.92);
+  border: 1px solid #8b7a4a;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 1px rgba(255, 220, 130, 0.12),
+    inset 0 0 22px rgba(0, 0, 0, 0.75),
+    0 12px 40px rgba(0, 0, 0, 0.85);
+  padding: 14px;
+  color: #fff7df;
+  font-size: 13px;
+  position: relative;
+  pointer-events: auto;
+}
+
+.glue-dialog-header {
+  width: 256px;
+  height: 64px;
+  background: url('/ui/Interface/DialogFrame/UI-DialogBox-Header.png') no-repeat center/contain;
+  color: #ffd100;
+  font-family: 'Morpheus', serif;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 58px;
+  margin: -54px auto 10px auto;
+  text-shadow: 2px 2px 3px #000;
+  position: relative;
+  z-index: 10;
+}
+
+/* WoW Styled Input fields */
+.glue-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.glue-input-container label {
+  color: #fce18a;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.glue-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: url('/ui/Interface/Glues/Common/Glues-EditBox-Background.png') no-repeat;
+  background-size: 100% 100%;
+  border: 0;
+  outline: none;
+  font-family: 'Friz Quadrata', serif;
+  font-size: 14px;
+}
+
+.glue-input:focus {
+  filter: brightness(1.2) drop-shadow(0 0 4px #ffaa00);
+}
+
+/* WoW styled button */
+.glue-button {
+  display: inline-block;
+  min-width: 110px;
+  height: 32px;
+  color: #ffd100;
+  background: url('/ui/Interface/Glues/Common/Glue-Panel-Button-Up.png') no-repeat;
+  background-size: 172.973% 133.333%;
+  background-position: 0% 0%;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Friz Quadrata', serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 32px;
+  text-shadow: 1px 1px 1px #000;
+  transition: filter 0.1s;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.glue-button:hover {
+  filter: brightness(1.2);
+}
+
+.glue-button:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-Panel-Button-Down.png');
+}
+
+.glue-button:disabled {
+  background-image: url('/ui/Interface/Glues/Common/Glue-Panel-Button-Disabled.png');
+  color: #7a7a7a;
+  cursor: not-allowed;
+}
+
+.glue-button-large {
+  min-width: 160px;
+  height: 42px;
+  font-size: 14px;
+  line-height: 42px;
+  background-image: url('/ui/Interface/Glues/Common/Glues-BigButton-Up.png');
+  background-size: 165.16% 200%;
+  background-position: 49.5% 50%;
+}
+
+.glue-button-large:active {
+  background-image: url('/ui/Interface/Glues/Common/Glues-BigButton-Down.png');
+}
+
+/* Popups / Modals */
+.glue-popup-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.glue-loading-dialog, .glue-error-dialog {
+  width: 320px;
+}
+
+.glue-loading-bar {
+  width: 100%;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #ffe600;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.glue-loading-bar-fill {
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, #aa8000, #ffd100);
+  box-shadow: 0 0 8px #ffea00;
+  animation: loadingAnim 2s infinite linear;
+}
+
+@keyframes loadingAnim {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.glue-error-text {
+  color: #ff3333;
+  text-align: center;
+  line-height: 1.4;
+  margin: 10px 0;
+}
+
+/* Checkboxes */
+.glue-checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #fce18a;
+  font-size: 12px;
+  margin: 8px 0;
+}
+
+.glue-checkbox {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  outline: none;
+  border: 0;
+  background: url('/ui/Interface/Glues/Login/Glues-CheckBox-Background.png') no-repeat;
+  background-size: 100% 100%;
+  cursor: pointer;
+}
+
+.glue-checkbox:checked {
+  background: url('/ui/Interface/Glues/Login/Glues-CheckBox-Background.png') no-repeat,
+              url('/ui/Interface/Glues/Login/Glues-CheckBox-Check.png') no-repeat;
+  background-size: 100% 100%, 100% 100%;
+}
+
+/* ================== LOGIN SCREEN ================== */
+.glue-login-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Primary login brand logo. */
+.glue-logo-container {
+  position: absolute;
+  top: 7px;
+  left: 3px;
+  width: 256px;
+  height: 128px;
+  background: url('/ui/Interface/Glues/Common/Glues-WoW-Logo.png') no-repeat left top/contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+  z-index: 5;
+}
+
+.glue-logo-fallback {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  color: #ffc800;
+  font-family: 'Morpheus', serif;
+  text-shadow: 2px 2px 4px #000;
+  z-index: 5;
+}
+.glue-logo-fallback h1 {
+  font-size: 22px;
+  margin: 0;
+}
+.glue-logo-fallback h2 {
+  font-size: 13px;
+  margin: 0;
+  color: #ffc800;
+}
+
+/* Floating login fields - no AccountLoginFrame background */
+.glue-login-fields {
+  position: absolute;
+  /* Account edit at bottom+345, password at bottom+270, so center fields around bottom+300 */
+  bottom: 240px;
+  left: 50%;
+  transform: translateX(calc(-50% + 8px)); /* +8px offset per XML */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.glue-field-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+}
+
+/* Gold label above each field (GlueFontNormal: r=1.0, g=0.78, b=0, 15px) */
+.glue-field-label {
+  font-family: 'Friz Quadrata', 'Cinzel', serif;
+  font-size: 15px;
+  color: rgb(255, 199, 0);
+  text-shadow: 1px 1px 2px #000, 0 0 4px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
+}
+
+/* Edit box — vanilla login editbox look: rounded near-black inset with a thin silver rim.
+   (Glue-Tooltip-Border.png is an edge-strip atlas, not a CSS 9-slice — see .glue-dialog note.) */
+.glue-field-editbox {
+  width: 200px;
+  height: 37px;
+  background-color: rgba(5, 5, 7, 0.9);
+  border: 1px solid rgba(168, 168, 178, 0.55);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 1px 0 rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.glue-field-editbox:focus-within {
+  border-color: rgba(220, 210, 160, 0.75);
+}
+
+.glue-login-editbox {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-family: Arial, 'Friz Quadrata', sans-serif;
+  font-size: 18px;
+  padding: 0 15px 5px 15px;
+  box-sizing: border-box;
+  letter-spacing: 0.5px;
+}
+
+/* Autofill styling for the new edit boxes */
+.glue-login-editbox:-webkit-autofill,
+.glue-login-editbox:-webkit-autofill:hover,
+.glue-login-editbox:-webkit-autofill:focus,
+.glue-login-editbox:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(9, 9, 9, 0.92) inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* AccountLoginLoginButton inherits the 1.12.1 GlueButtonTemplate (red panel texture), not the
+   larger blue/stone action-button artwork used by Enter World and character creation. */
+.glue-login-fields .glue-login-submit {
+  margin-top: 12px;
+  width: 170px;
+  min-width: 0;
+  height: 45px;
+  line-height: 45px;
+  font-size: 15px;
+  background-size: 172.973% 133.333%;
+  background-position: 0 0;
+}
+
+.glue-login-fields .glue-login-submit:hover {
+  background-image:
+    url('/ui/Interface/Glues/Common/Glue-Panel-Button-Highlight.png'),
+    url('/ui/Interface/Glues/Common/Glue-Panel-Button-Up.png');
+  background-size: 172.973% 133.333%, 172.973% 133.333%;
+  background-position: 0 0, 0 0;
+}
+
+.glue-login-fields .glue-login-submit:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-Panel-Button-Down.png');
+}
+
+/* Small button template: 150x38 per GlueButtonSmallTemplate */
+.glue-button-small {
+  min-width: 150px !important;
+  width: 150px;
+  height: 38px;
+  line-height: 38px;
+  font-size: 12px;
+}
+
+/* Left panel: BOTTOMLEFT at x=10, starting at y=120 upward */
+.glue-login-left-panel {
+  position: absolute;
+  bottom: 120px;
+  left: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0px;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* Remember checkbox: below Community Site (last in left panel stack) */
+.glue-login-remember-container {
+  position: absolute;
+  bottom: 82px;
+  left: 17px;
+  margin: 0 !important;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* Right panel: BOTTOMRIGHT at x=-5, Quit at y=29 */
+.glue-login-right-panel {
+  position: absolute;
+  bottom: 29px;
+  right: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* Space between Quit and Terms of Use: y=80 gap (for realm name text) */
+.glue-login-right-panel button:nth-child(4) {
+  /* Quit - bottom */
+  order: 4;
+}
+.glue-login-right-panel button:nth-child(3) {
+  /* Terms of Use - 80px gap above Quit */
+  order: 3;
+  margin-bottom: 42px;
+}
+.glue-login-right-panel button:nth-child(2) {
+  /* Credits */
+  order: 2;
+}
+.glue-login-right-panel button:nth-child(1) {
+  /* Cinematics */
+  order: 1;
+}
+
+/* Bottom row: version left, copyright+logo center */
+.glue-login-bottom-row {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 0 10px 0;
+  font-size: 12px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.glue-login-version {
+  color: rgb(255, 199, 0);
+  font-family: 'Friz Quadrata', serif;
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: left;
+  text-shadow: 1px -1px 1px #000;
+  width: 200px;
+  padding-left: 2px;
+}
+
+.glue-login-bottom-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.login-brand-logo {
+  width: 100px;
+  height: 100px;
+  background: url('/ui/Interface/Glues/Common/Glues-WoW-Logo.png') no-repeat center/contain;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));
+}
+
+.glue-login-copyright {
+  color: rgb(255, 199, 0);
+  font-family: 'Friz Quadrata', serif;
+  font-size: 12px;
+  text-shadow: 1px -1px 1px #000;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Music slider - centered above bottom row */
+.glue-music-slider-container {
+  position: absolute;
+  bottom: 128px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #c7c7c7;
+  text-shadow: 1.5px 1.5px 2px #000;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+/* Server Configuration Panel (Themed Box below Login) */
+.glue-login-server-box {
+  width: 340px;
+  padding: 12px 18px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+}
+
+.glue-server-title {
+  font-family: 'Morpheus', serif;
+  font-size: 15px;
+  color: #ffd100;
+  text-shadow: 1px 1px 2px #000;
+  margin-bottom: 2px;
+}
+
+.glue-login-proxy-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.glue-login-proxy-container label {
+  color: #fce18a;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.glue-login-proxy-input {
+  width: 100%;
+  height: 26px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid #5a4b1e !important;
+  border-radius: 2px;
+  outline: none;
+  font-family: 'Friz Quadrata', serif;
+  font-size: 11px;
+}
+
+.glue-login-proxy-input:focus {
+  border-color: #ffd100 !important;
+  box-shadow: 0 0 5px rgba(255, 209, 0, 0.5);
+}
+
+/* Autocomplete/autofill styling (legacy selectors kept for proxy inputs) */
+.glue-login-proxy-input:-webkit-autofill,
+.glue-login-proxy-input:-webkit-autofill:hover,
+.glue-login-proxy-input:-webkit-autofill:focus,
+.glue-login-proxy-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.85) inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ================== REALM SELECT ================== */
+.glue-realm-select-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glue-realm-dialog {
+  width: 480px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.glue-realm-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 300px;
+  margin: 15px 0;
+  border: 1px solid rgba(255, 209, 0, 0.15);
+  background: rgba(0,0,0,0.3);
+}
+
+.glue-realm-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 209, 0, 0.1);
+  color: #ffe600;
+}
+
+.glue-realm-item:hover {
+  background: rgba(255, 209, 0, 0.12);
+}
+
+.glue-realm-item.selected {
+  background: rgba(255, 209, 0, 0.2);
+  color: #ffffff;
+}
+
+/* ================== CHARACTER SELECT ================== */
+.glue-char-select-container {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.glue-char-select-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.glue-char-select-right {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.glue-char-list-box {
+  flex: 1;
+  max-height: 480px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 209, 0, 0.15);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.glue-char-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 209, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.glue-char-item:hover {
+  background: rgba(255, 209, 0, 0.1);
+}
+
+.glue-char-item.selected {
+  background: rgba(255, 209, 0, 0.2);
+  box-shadow: inset 0 0 10px rgba(255, 209, 0, 0.3);
+}
+
+.glue-char-name {
+  font-family: 'Morpheus', serif;
+  font-size: 17px;
+  color: #ffffff;
+}
+
+.glue-char-desc {
+  font-size: 11px;
+  color: #c7c7c7;
+}
+
+.glue-char-info-box {
+  padding: 15px;
+  background: rgba(12, 10, 20, 0.85);
+  border: 1px solid rgba(255, 209, 0, 0.2);
+}
+
+.glue-char-info-name {
+  font-family: 'Morpheus', serif;
+  font-size: 24px;
+  color: #ffd100;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 2px #000;
+}
+
+.glue-char-info-text {
+  font-size: 13px;
+  color: #fff7df;
+  margin-bottom: 4px;
+}
+
+.glue-char-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ================== CHARACTER CREATE ================== */
+.glue-char-create-container {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.glue-create-left {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.glue-create-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.glue-create-right {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Selection Grids */
+.glue-grid-title {
+  font-family: 'Morpheus', serif;
+  font-size: 16px;
+  color: #ffd100;
+  margin-bottom: 8px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 209, 0, 0.2);
+  padding-bottom: 4px;
+}
+
+.glue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  border: 1px solid rgba(255, 209, 0, 0.15);
+}
+
+.glue-grid-item {
+  aspect-ratio: 1;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #5a4b1e;
+  box-sizing: border-box;
+}
+
+.glue-grid-item:hover {
+  border-color: #ffd100;
+  filter: brightness(1.2);
+}
+
+.glue-grid-item.selected {
+  border-color: #ffe600;
+  box-shadow: 0 0 8px #ffe600;
+  background-color: rgba(255, 209, 0, 0.15);
+}
+
+/* Gender toggle */
+.glue-gender-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 209, 0, 0.15);
+}
+
+.glue-gender-btn {
+  flex: 1;
+  height: 48px;
+  cursor: pointer;
+  border: 1px solid #5a4b1e;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.glue-gender-btn.selected {
+  border-color: #ffe600;
+  box-shadow: 0 0 8px #ffe600;
+  background-color: rgba(255, 209, 0, 0.15);
+}
+
+/* Customization sliders */
+.glue-custom-controls {
+  padding: 15px;
+  background: rgba(12, 10, 20, 0.85);
+  border: 1px solid rgba(255, 209, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glue-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.glue-slider-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #ffd100;
+}
+
+.glue-slider-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.glue-slider-btn {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.glue-slider-prev {
+  background: url('/ui/Interface/Glues/Common/Glue-LeftArrow-Button-Up.png') no-repeat center/contain;
+}
+
+.glue-slider-prev:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-LeftArrow-Button-Down.png');
+}
+
+.glue-slider-next {
+  background: url('/ui/Interface/Glues/Common/Glue-RightArrow-Button-Up.png') no-repeat center/contain;
+}
+
+.glue-slider-next:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-RightArrow-Button-Down.png');
+}
+
+.glue-slider-val-box {
+  flex: 1;
+  height: 26px;
+  background: url('/ui/Interface/Glues/Common/Glues-EditBox-Background.png') no-repeat center/contain;
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 26px;
+}
+
+.glue-name-dialog {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.glue-name-dialog .glue-input {
+  flex: 1;
+}
+
+.glue-name-dialog .glue-button {
+  min-width: 80px;
+}
+
+/* SPRITE-BASED RACE AND CLASS ICONS */
+.glue-race-icon {
+  width: 100%;
+  height: 100%;
+  background-image: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Races.png');
+  background-size: 400% 400%;
+  image-rendering: pixelated;
+}
+
+.glue-class-icon {
+  width: 100%;
+  height: 100%;
+  background-image: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Classes.png');
+  /* 4x4 atlas (0.25 UV cells) per 1.12 GlueXML CLASS_BUTTONS — same grid as the race atlas. */
+  background-size: 400% 400%;
+  image-rendering: pixelated;
+}
+
+/* Faction Banner */
+.glue-faction-banner {
+  width: 120px;
+  height: 160px;
+  margin-top: 15px;
+  filter: drop-shadow(0 4px 6px #000);
+}
+
+.glue-faction-banner.alliance {
+  background: url('/ui/Interface/Glues/CharacterCreate/CharacterCreate-Faction.png') no-repeat;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+}
+
+.glue-faction-banner.horde {
+  background: url('/ui/Interface/Glues/CharacterCreate/CharacterCreate-Faction.png') no-repeat;
+  background-size: 200% 100%;
+  background-position: 100% 0%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: #5a4b1e;
+  border: 1px solid #ffd100;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7e692a;
+}
+
+/* ================== EULA / TOS DIALOGS ================== */
+.glue-eula-dialog {
+  width: 640px;
+  height: 512px !important;
+  max-height: 512px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 48px 45px 35px 24px !important;
+  position: relative;
+  border: none !important;
+  border-image: none !important;
+  box-shadow: none !important;
+  background-image: 
+    url('/ui/Interface/HelpFrame/HelpFrame-TopLeft.png'),
+    url('/ui/Interface/HelpFrame/HelpFrame-Top.png'),
+    url('/ui/Interface/Glues/Login/Glues-TOS-TopRight.png'),
+    url('/ui/Interface/HelpFrame/HelpFrame-BotLeft.png'),
+    url('/ui/Interface/HelpFrame/HelpFrame-Bottom.png'),
+    url('/ui/Interface/HelpFrame/HelpFrame-BotRight.png') !important;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat !important;
+  background-position: 
+    0px 0px,
+    256px 0px,
+    512px 0px,
+    0px 256px,
+    256px 256px,
+    512px 256px !important;
+  background-size: 
+    256px 256px,
+    256px 256px,
+    128px 256px,
+    256px 256px,
+    256px 256px,
+    128px 256px !important;
+}
+.glue-eula-dialog .glue-dialog-header {
+  width: 420px;
+  font-size: 18px;
+  margin-top: -68px;
+}
+.glue-eula-text {
+  flex: 1;
+  overflow-y: auto;
+  background: transparent !important;
+  border: none !important;
+  padding: 10px 10px 10px 0px;
+  margin-bottom: 20px;
+  font-family: 'Friz Quadrata', serif;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #fff7df !important; /* Cream/white text for readability */
+  user-select: text;
+  text-shadow: 1px 1px 1px #000 !important;
+}
+.glue-credits-dialog {
+  width: 440px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0px !important;
+}
+.glue-credits-dialog .glue-eula-text {
+  color: #fff7df !important; /* White text for dark standard dialog background */
+}
+
+/* ================== VIRTUAL PIN KEYPAD ================== */
+.glue-pin-dialog {
+  width: 280px;
+  padding: 0px !important;
+  box-sizing: border-box;
+}
+.glue-pin-display {
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #5a4b1e;
+  color: #ffffff;
+  font-size: 18px;
+  text-align: center;
+  line-height: 32px;
+  margin-bottom: 12px;
+  letter-spacing: 4px;
+}
+.glue-pin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.glue-pin-btn {
+  height: 36px;
+  font-family: 'Friz Quadrata', serif;
+  font-size: 14px;
+  color: #ffd100;
+}
+
+/* ================== REALM SELECT SORT & TABS ================== */
+.glue-realm-headers {
+  display: flex;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 209, 0, 0.2);
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffd100;
+  padding: 6px 15px;
+}
+.glue-realm-header-col {
+  cursor: pointer;
+  user-select: none;
+}
+.glue-realm-header-col:hover {
+  color: #ffffff;
+}
+.glue-realm-tabs {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+.glue-realm-tab {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #5a4b1e;
+  color: #ffd100;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: 'Friz Quadrata', serif;
+}
+.glue-realm-tab.active {
+  background: rgba(255, 209, 0, 0.15);
+  border-color: #ffd100;
+  color: #ffffff;
+}
+
+/* ================== ROTATION CONTROLS ================== */
+.glue-rotate-container {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  pointer-events: auto;
+  z-index: 5;
+}
+.glue-rotate-btn {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+}
+.glue-rotate-left {
+  background: url('/ui/Interface/Glues/Common/Glue-LeftArrow-Button-Up.png') no-repeat center/contain;
+}
+.glue-rotate-left:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-LeftArrow-Button-Down.png');
+}
+.glue-rotate-right {
+  background: url('/ui/Interface/Glues/Common/Glue-RightArrow-Button-Up.png') no-repeat center/contain;
+}
+.glue-rotate-right:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-RightArrow-Button-Down.png');
+}
+
+/* ================== MAP LOADING SCREENS ================== */
+.glue-load-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* The 512-square source texture was authored for the client's 4:3 viewport. Preserve that
+     presentation on modern displays instead of cropping it or stretching it across ultrawide. */
+  background-size: min(100vw, 133.333vh) min(75vw, 100vh);
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+  pointer-events: auto;
+}
+.glue-load-screen-overlay.is-hiding {
+  opacity: 0;
+}
+.glue-load-progress {
+  --loading-progress: 0%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(28px, 7vh, 72px);
+  width: min(512px, calc(100vw - 32px));
+  aspect-ratio: 8 / 1;
+  margin-inline: auto;
+}
+.glue-load-progress > div {
+  position: absolute;
+  pointer-events: none;
+}
+.glue-load-progress-background,
+.glue-load-progress-fill,
+.glue-load-progress-glass,
+.glue-load-progress-border {
+  inset: 0;
+}
+.glue-load-progress-background {
+  background: url('/ui/Interface/Glues/LoadingBar/Loading-BarBackground.png') repeat;
+  background-size: 32px 32px;
+}
+.glue-load-progress-fill {
+  width: var(--loading-progress);
+  background: url('/ui/Interface/Glues/LoadingBar/Loading-BarFill.png') repeat-x center / 64px 64px;
+  clip-path: inset(14px 24px);
+  transition: width 0.15s linear;
+}
+.glue-load-progress-glow {
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: url('/ui/Interface/Glues/LoadingBar/Loading-BarGlow.png') no-repeat center / 100% 100%;
+  /* Build 5875 composites this full-alpha texture additively; screen makes black contribute zero. */
+  mix-blend-mode: screen;
+  transform: translateX(calc(var(--loading-progress) - 100%));
+  transition: transform 0.15s linear;
+}
+.glue-load-progress-glass {
+  background: url('/ui/Interface/Glues/LoadingBar/Loading-BarGlass.png') no-repeat center / 100% 100%;
+}
+.glue-load-progress-border {
+  background: url('/ui/Interface/Glues/LoadingBar/Loading-BarBorder.png') no-repeat center / 100% 100%;
+}
+
+/* Range slider appearance */
+.glue-music-slider-container input[type="range"] {
+  appearance: none;
+  width: 140px;
+  height: 4px;
+  background: #5a4b1e;
+  border: 1px solid #ffd100;
+  outline: none;
+}
+
+.glue-music-slider-container input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: url('/ui/Interface/Glues/Common/Glue-Panel-Button-Up.png') no-repeat center/contain;
+  border: 1px solid #ffd100;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.glue-music-slider-container input[type="range"]::-webkit-slider-thumb:active {
+  background-image: url('/ui/Interface/Glues/Common/Glue-Panel-Button-Down.png');
+}
+
+.glue-server-settings-dialog {
+  width: 360px;
+  padding: 0px !important;
+  box-sizing: border-box;
+}

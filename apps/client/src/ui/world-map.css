@@ -1,0 +1,43 @@
+/*
+ * The world map is a "full" UIPanel, and in vanilla that means it takes over the screen.
+ *
+ * `UIPanelWindows["WorldMapFrame"] = { area = "full" }` (UIParent.lua:32). ShowUIPanel routes an
+ * `area == "full"` panel to `CloseAllWindows(); SetFullScreenFrame(frame)` (UIParent.lua:391-395),
+ * and SetFullScreenFrame calls **`UIParent:Hide()`** before showing it (UIParent.lua:551-565). So
+ * while the map is open the entire rest of the interface is gone — no unit frames, minimap, chat,
+ * action bars or quest tracker around the edges. `.wow-ingame-hud.world-map-open` reproduces that.
+ *
+ * Behind the parchment the client shows a flat dark field, not the 3D world. Build 5875 ships no
+ * texture for it (interface.MPQ holds exactly twelve UI-WorldMap-* tiles and no background,
+ * border, edge or corner art) and WorldMapFrame declares no Backdrop, so the fill is the client's
+ * own — which is why it cannot be sourced from an asset and is set here instead.
+ */
+.wow-world-map-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  overflow: hidden;
+  pointer-events: auto;
+  background: #05070d;
+  user-select: none;
+}
+
+.wow-world-map-frame.is-hidden { display: none; }
+
+/*
+ * `UIParent:Hide()` while a "full" panel is up (UIParent.lua:560). Every HUD child is hidden
+ * except the map itself, which in vanilla is not a child of UIParent at all — it is a sibling
+ * that survives the hide. Scoped to the direct children so the map's own subtree is untouched.
+ */
+.wow-ingame-hud.world-map-open > *:not(.wow-world-map-frame) { visibility: hidden; }
+
+.wow-world-map-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1024px;
+  height: 768px;
+  transform: translate(-50%, -50%) scale(var(--world-map-scale, 1));
+  transform-origin: center;
+  display: block;
+}

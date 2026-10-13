@@ -1,0 +1,67 @@
+.glue-screen .glue-char-preview {
+  position: absolute;
+  inset: 0 calc(280 * var(--glue-px)) 0 0;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: #d8c99d;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Keep the original glue art, with readable text and a dedicated model area on phones. */
+html.vanillagl-phone .glue-char-select-container {
+  --glue-px: 1px;
+  --roster-width: clamp(190px, 28vw, 250px);
+  --footer: 48px;
+}
+html.vanillagl-phone .glue-char-select-container .glue-wow-logo { width: 130px; height: 65px; }
+html.vanillagl-phone .glue-char-preview {
+  inset: 30px calc(var(--roster-width) + 16px) 80px 8px;
+}
+html.vanillagl-phone .glue-char-roster {
+  top: 8px; right: 8px; bottom: var(--footer); width: var(--roster-width); height: auto;
+}
+html.vanillagl-phone .glue-char-realm-name { top: 6px; font-size: 12px; }
+html.vanillagl-phone .glue-char-realm { top: 20px; height: 40px; line-height: 40px; font-size: 12px; }
+html.vanillagl-phone .glue-char-list-box {
+  top: 64px; left: 8px; right: 8px; bottom: 46px; width: auto; max-height: none; overflow-y: auto;
+  touch-action: pan-y;
+}
+html.vanillagl-phone .glue-char-item { width: 100%; height: 58px; padding: 6px 8px; }
+html.vanillagl-phone .glue-char-item::before { inset: 0; width: 100%; height: 100%; }
+html.vanillagl-phone :is(.glue-char-name, .glue-char-desc, .glue-char-location) { width: auto; }
+html.vanillagl-phone .glue-char-create-new {
+  bottom: 4px; width: calc(100% - 16px); height: 40px; line-height: 40px; font-size: 12px;
+}
+html.vanillagl-phone .glue-char-enter {
+  left: calc((100% - var(--roster-width) - 16px) / 2); bottom: 8px;
+  width: 160px; height: 48px; line-height: 48px;
+}
+html.vanillagl-phone .glue-char-selected-name {
+  left: 8px; right: calc(var(--roster-width) + 16px); bottom: 60px; font-size: 20px;
+}
+html.vanillagl-phone .glue-char-select-rotate {
+  left: calc((100% - var(--roster-width) - 16px) / 2); bottom: 10px; width: 260px;
+  justify-content: space-between; pointer-events: none;
+}
+html.vanillagl-phone .glue-char-select-rotate button { pointer-events: auto; width: 44px; height: 44px; margin: 0; }
+html.vanillagl-phone :is(.glue-char-back, .glue-char-delete, .glue-char-addons) {
+  bottom: 4px; height: 40px; line-height: 40px; font-size: 11px;
+}
+html.vanillagl-phone .glue-char-back { right: 8px; width: 64px; }
+html.vanillagl-phone .glue-char-delete { right: 76px; width: 122px; }
+html.vanillagl-phone .glue-char-addons { left: 8px; width: 70px; }
+
+@media (orientation: portrait) {
+  html.vanillagl-phone .glue-char-select-container { --roster-height: clamp(180px, 32vh, 280px); }
+  html.vanillagl-phone .glue-char-preview { inset: 52px 8px calc(var(--roster-height) + 128px); }
+  html.vanillagl-phone .glue-char-roster {
+    top: auto; left: 8px; right: 8px; bottom: 48px; width: auto; height: var(--roster-height);
+  }
+  html.vanillagl-phone .glue-char-enter { left: 50%; bottom: calc(var(--roster-height) + 56px); }
+  html.vanillagl-phone .glue-char-selected-name {
+    left: 8px; right: 8px; bottom: calc(var(--roster-height) + 108px);
+  }
+  html.vanillagl-phone .glue-char-select-rotate { left: 50%; bottom: calc(var(--roster-height) + 58px); }
+}

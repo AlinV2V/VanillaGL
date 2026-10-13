@@ -1,0 +1,92 @@
+/* Positioning only. All Escape/options chrome, controls, text and states are
+ * composited by VanillaCanvas in game-menu.ts. */
+.wow-esc-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.wow-esc-layer.is-hidden,
+.wow-esc-layer .is-hidden {
+  display: none !important;
+}
+
+.wow-keybinding-layer,
+.wow-macro-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.wow-keybinding-layer.is-hidden,
+.wow-macro-layer.is-hidden { display: none !important; }
+
+.wow-keybinding-layer > .wow-native-panel-canvas,
+.wow-macro-layer > .wow-native-panel-canvas {
+  position: relative;
+  inset: auto;
+  display: block;
+}
+
+.wow-macro-name-input,
+.wow-macro-body-input {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  box-sizing: border-box;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font: 12px Friz Quadrata, Arial, sans-serif;
+  resize: none;
+}
+
+.wow-macro-name-input { width: 327px; height: 22px; transform: translate(-226px, 4px); }
+.wow-macro-body-input { width: 450px; height: 122px; transform: translate(-230px, 50px); }
+
+.wow-esc-dialog {
+  position: relative;
+  flex: 0 0 auto;
+  pointer-events: auto;
+}
+
+/* CanvasPanel canvases are absolute inside movable HUD frames. Escape hosts
+ * instead participate in the centering flex layout, so keep them in flow. */
+.wow-esc-dialog > .wow-native-panel-canvas {
+  position: relative;
+  inset: auto;
+  display: block;
+}
+
+/* The full Vanilla video page is 760 logical pixels tall. At 720p and the
+ * lower legacy resolutions the game applies UI scaling; mirror that here so
+ * the header and footer remain reachable without turning the panel into an
+ * HTML scrollbar. */
+@media (max-height: 849px) {
+  .wow-esc-dialog--video { transform: scale(.88); }
+}
+
+@media (max-height: 679px) {
+  .wow-esc-dialog--video { transform: scale(.78); }
+}
+
+/* The Interface Options frame is 864 logical px wide and, on the Advanced tab,
+ * ~674 tall. Scale it down on smaller viewports so both tabs and the footer
+ * stay on-screen without an HTML scrollbar, mirroring Vanilla's UI scaling. */
+@media (max-width: 1099px), (max-height: 719px) {
+  .wow-esc-dialog--interface { transform: scale(.82); }
+}
+
+@media (max-width: 919px), (max-height: 619px) {
+  .wow-esc-dialog--interface { transform: scale(.7); }
+}

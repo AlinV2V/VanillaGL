@@ -1,0 +1,338 @@
+/* Character creation: the original single left-side configuration frame. */
+.glue-screen .glue-create-configuration {
+  position: absolute;
+  top: calc(74 * var(--glue-px));
+  left: calc(28 * var(--glue-px));
+  width: calc(206 * var(--glue-px));
+  height: calc(686 * var(--glue-px));
+}
+
+.glue-screen .glue-create-frame-art {
+  position: absolute;
+  inset: 0 calc(-9 * var(--glue-px));
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.58) url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Background.png') repeat;
+  border: calc(7 * var(--glue-px)) solid transparent;
+  border-image: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-OuterBorder.png') 8 stretch;
+  pointer-events: none;
+}
+
+.glue-screen .glue-create-banners {
+  position: absolute;
+  top: calc(60 * var(--glue-px));
+  left: 50%;
+  width: calc(256 * var(--glue-px));
+  height: calc(259 * var(--glue-px));
+  transform: translateX(calc(-50% - 2 * var(--glue-px)));
+  background: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Banners.png') no-repeat center / 100% 100%;
+  pointer-events: none;
+}
+
+.glue-screen .glue-create-banners span {
+  position: absolute;
+  top: calc(-17 * var(--glue-px));
+  width: 50%;
+  color: #ffd100;
+  font-size: calc(12 * var(--glue-px));
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.glue-screen .glue-create-banners span:last-child { left: 50%; }
+
+.glue-screen .glue-grid {
+  position: absolute;
+  display: grid;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.glue-screen .glue-race-grid {
+  top: calc(68 * var(--glue-px));
+  left: calc(33 * var(--glue-px));
+  grid-template-rows: repeat(4, calc(48 * var(--glue-px)));
+  grid-template-columns: repeat(2, calc(48 * var(--glue-px)));
+  grid-auto-flow: column;
+  row-gap: calc(5 * var(--glue-px));
+  column-gap: calc(46 * var(--glue-px));
+}
+
+.glue-screen .glue-class-grid {
+  top: calc(369 * var(--glue-px));
+  left: calc(29 * var(--glue-px));
+  grid-template-columns: repeat(3, calc(48 * var(--glue-px)));
+  grid-auto-rows: calc(48 * var(--glue-px));
+  gap: 0 calc(4 * var(--glue-px));
+}
+
+.glue-screen .glue-grid-item {
+  position: relative;
+  width: calc(48 * var(--glue-px));
+  height: calc(48 * var(--glue-px));
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.glue-screen .glue-grid-item::after,
+.glue-screen .glue-gender-btn::after {
+  content: '';
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: url('/ui/Interface/Buttons/ButtonHilight-Square.png') no-repeat center / 100% 100%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.glue-screen .glue-grid-item:hover::after,
+.glue-screen .glue-grid-item.selected::after,
+.glue-screen .glue-gender-btn:hover::after,
+.glue-screen .glue-gender-btn.selected::after { display: block; }
+
+.glue-screen .glue-race-icon,
+.glue-screen .glue-class-icon { image-rendering: auto; }
+
+.glue-screen .glue-gender-container {
+  position: absolute;
+  top: calc(303 * var(--glue-px));
+  left: calc(53 * var(--glue-px));
+  display: flex;
+  gap: calc(5 * var(--glue-px));
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.glue-screen .glue-gender-btn {
+  position: relative;
+  flex: none;
+  width: calc(48 * var(--glue-px));
+  height: calc(48 * var(--glue-px));
+  padding: 0;
+  border: 0;
+  background: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Gender.png') no-repeat 0 0 / 200% 100%;
+  box-shadow: none;
+}
+
+.glue-screen .glue-gender-btn:last-child { background-position: 100% 0; }
+
+.glue-screen .glue-custom-controls {
+  position: absolute;
+  top: calc(480 * var(--glue-px));
+  left: calc(4 * var(--glue-px));
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.glue-screen .glue-slider-row {
+  position: relative;
+  width: calc(198 * var(--glue-px));
+  height: calc(32 * var(--glue-px));
+}
+
+.glue-screen .glue-slider-label {
+  position: absolute;
+  top: 0;
+  left: calc(-5 * var(--glue-px));
+  width: calc(159 * var(--glue-px));
+  height: calc(32 * var(--glue-px));
+  box-sizing: border-box;
+  padding-top: calc(5 * var(--glue-px));
+  color: #fff;
+  background: url('/ui/Interface/Glues/CharacterCreate/CharacterCreate-LabelFrame.png') no-repeat center / 100% 100%;
+  font-size: calc(11 * var(--glue-px));
+  text-align: center;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.glue-screen .glue-slider-btn {
+  position: absolute;
+  top: 0;
+  width: calc(32 * var(--glue-px));
+  height: calc(32 * var(--glue-px));
+}
+
+.glue-screen .glue-slider-prev { right: calc(29 * var(--glue-px)); }
+.glue-screen .glue-slider-next { right: 0; }
+
+.glue-screen .glue-create-randomize {
+  width: calc(146 * var(--glue-px));
+  min-width: 0;
+  height: calc(30 * var(--glue-px));
+  margin: calc(25 * var(--glue-px)) auto 0;
+  font-size: calc(11 * var(--glue-px));
+  line-height: calc(30 * var(--glue-px));
+}
+
+.glue-screen .glue-create-name-wrap {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50 * var(--glue-px));
+  width: calc(156 * var(--glue-px));
+  height: calc(40 * var(--glue-px));
+  transform: translateX(calc(-50% + 8 * var(--glue-px)));
+}
+
+.glue-screen .glue-create-name-wrap > span:first-child {
+  position: absolute;
+  bottom: calc(17 * var(--glue-px));
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: #ffd100;
+  font-size: calc(14 * var(--glue-px));
+  text-transform: uppercase;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.glue-screen .glue-create-name-wrap .glue-input {
+  height: calc(40 * var(--glue-px));
+  padding-left: calc(15 * var(--glue-px));
+  color: #fff;
+  font-size: calc(13 * var(--glue-px));
+  background: rgba(0, 0, 0, 0.72) url('/ui/Interface/Glues/Common/Glue-Tooltip-Background.png') repeat;
+  border: max(1px, calc(1 * var(--glue-px))) solid #716642;
+}
+
+.glue-screen .glue-create-name-error {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: calc(300 * var(--glue-px));
+  transform: translateX(-50%);
+  color: #ff2020;
+  font-size: calc(11 * var(--glue-px));
+  text-align: center;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.glue-screen .glue-char-create-rotate {
+  left: calc(237 * var(--glue-px));
+  bottom: 0;
+  gap: 0;
+  transform: none;
+}
+
+.glue-screen .glue-create-back,
+.glue-screen .glue-create-accept {
+  position: absolute;
+  right: calc(50 * var(--glue-px));
+  min-width: 0;
+}
+
+.glue-screen .glue-create-back {
+  bottom: calc(20 * var(--glue-px));
+  width: calc(120 * var(--glue-px));
+  height: calc(30 * var(--glue-px));
+  font-size: calc(11 * var(--glue-px));
+  line-height: calc(30 * var(--glue-px));
+}
+
+.glue-screen .glue-create-accept {
+  bottom: calc(55 * var(--glue-px));
+  width: calc(160 * var(--glue-px));
+  height: calc(35 * var(--glue-px));
+  font-size: calc(12 * var(--glue-px));
+  line-height: calc(35 * var(--glue-px));
+}
+
+/* CharacterCreate.xml's faction, race, and class information stack. */
+.glue-screen .glue-create-info-panels {
+  position: absolute;
+  top: calc(20 * var(--glue-px));
+  right: calc(20 * var(--glue-px));
+  width: calc(240 * var(--glue-px));
+  z-index: 2;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.glue-screen .glue-create-info-panel {
+  position: relative;
+  width: 100%;
+  height: calc(160 * var(--glue-px));
+  box-sizing: border-box;
+  padding: calc(8 * var(--glue-px)) calc(10 * var(--glue-px));
+  overflow: hidden;
+  background: rgba(4, 5, 12, 0.9) url('/ui/Interface/Glues/Common/Glue-Tooltip-Background.png') repeat;
+  border: calc(8 * var(--glue-px)) solid transparent;
+  border-image: url('/ui/Interface/Glues/Common/TextPanel-Border.png') 8 stretch;
+  box-shadow: inset 0 0 calc(18 * var(--glue-px)) #000, 0 calc(3 * var(--glue-px)) calc(8 * var(--glue-px)) #000;
+}
+
+.glue-screen .glue-create-info-panel.race {
+  height: calc(260 * var(--glue-px));
+  margin-top: calc(-10 * var(--glue-px));
+}
+
+.glue-screen .glue-create-info-panel.class {
+  height: calc(210 * var(--glue-px));
+  margin-top: calc(-10 * var(--glue-px));
+}
+
+.glue-screen .glue-create-info-heading {
+  display: flex;
+  min-height: calc(48 * var(--glue-px));
+  align-items: flex-start;
+}
+
+.glue-screen .glue-create-info-heading h2 {
+  margin: calc(4 * var(--glue-px)) 0 0 calc(6 * var(--glue-px));
+  color: #ffd100;
+  font-family: 'Friz Quadrata', serif;
+  font-size: calc(17 * var(--glue-px));
+  font-weight: normal;
+  line-height: 1;
+}
+
+.glue-screen .glue-create-info-icon {
+  position: relative;
+  flex: 0 0 calc(48 * var(--glue-px));
+  width: calc(48 * var(--glue-px));
+  height: calc(48 * var(--glue-px));
+  background-repeat: no-repeat;
+}
+
+.glue-screen .glue-create-info-icon::after {
+  content: '';
+  position: absolute;
+  inset: calc(-8 * var(--glue-px));
+  background: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-IconShadow.png') no-repeat center / 100% 100%;
+  pointer-events: none;
+}
+
+.glue-screen .glue-create-faction-icon {
+  background-image: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Factions.png');
+  background-size: 200% 100%;
+}
+
+.glue-screen .glue-create-race-info-icon {
+  background-image: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Races.png');
+  background-size: 400% 400%;
+}
+
+.glue-screen .glue-create-class-info-icon {
+  background-image: url('/ui/Interface/Glues/CharacterCreate/UI-CharacterCreate-Classes.png');
+  background-size: 400% 400%;
+}
+
+.glue-screen .glue-create-info-body {
+  margin-top: calc(3 * var(--glue-px));
+  color: #fff;
+  font-size: calc(10.5 * var(--glue-px));
+  line-height: 1.12;
+  text-align: left;
+}
+
+.glue-screen .glue-create-info-abilities {
+  margin-top: calc(5 * var(--glue-px));
+  color: #ffd100;
+}

@@ -1,0 +1,25 @@
+{
+  "source": "generic test fixture",
+  "transportRows": [
+    {
+      "entry": 1001,
+      "name": "Transport_Route_A",
+      "period": 339575
+    },
+    {
+      "entry": 1002,
+      "name": "Transport_Route_B",
+      "period": 360016
+    },
+    {
+      "entry": 1003,
+      "name": "Transport_Route_C",
+      "period": 242566
+    },
+    {
+      "entry": 1004,
+      "name": "Transport_Route_D",
+      "period": 280000
+    }
+  ]
+}

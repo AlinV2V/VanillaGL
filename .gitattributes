@@ -1,0 +1,15 @@
+# Auto detect text files and perform LF normalization on checkout
+* text=auto eol=lf
+
+# Explicit binary files
+*.png binary
+*.jpg binary
+*.webp binary
+*.glb binary
+*.gltf binary
+*.wasm binary
+
+# Windows launchers need CRLF; shell launchers need LF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf

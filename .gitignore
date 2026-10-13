@@ -1,0 +1,63 @@
+# ----------------------------------------------------------------- dependencies & build output
+node_modules/
+dist/
+.vite/
+
+# ----------------------------------------------------------------- local client archives & caches
+# `npm run setup` copies or links your own 1.12.1 MPQ archives here.
+.client-cache/
+tools/bin/*/
+
+# ----------------------------------------------------------------- logs, backups & scratch
+*.log
+logs/
+backups/
+*.bak
+*.bak-*
+.tmp/
+temp/
+scratch/
+artifacts/
+
+# ----------------------------------------------------------------- packet captures (may contain account data)
+*.bpr.json
+
+# ----------------------------------------------------------------- proprietary / raw game assets
+# Never commit World of Warcraft client data or anything baked from it.
+*.mpq
+*.MPQ
+*.blp
+*.m2
+*.wmo
+*.adt
+*.dbc
+*.wav
+*.mp3
+*.exe
+*.dll
+data/
+!apps/client/src/data/
+!apps/client/src/data/**
+
+# ----------------------------------------------------------------- generated runtime asset corpus
+apps/client/public/*
+!apps/client/public/README.md
+
+# ----------------------------------------------------------------- generated metadata databases
+wow_metadata.db
+wow_metadata.sql
+
+# ----------------------------------------------------------------- OS & editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ----------------------------------------------------------------- environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.pkcs12

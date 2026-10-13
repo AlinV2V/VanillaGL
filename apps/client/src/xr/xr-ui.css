@@ -1,0 +1,4 @@
+/* The source action canvas must exist even when the flat phone layout normally hides it. */
+html.vanillagl-xr .wow-main-menu-bar:not(.is-hidden) { display: block !important; }
+html.vanillagl-xr .vanillagl-mobile-controls,
+html.vanillagl-xr .vanillagl-mobile-chat-toggle { display: none !important; }

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="VanillaGL" />
+    <meta name="theme-color" content="#0b0820" />
+    <link rel="manifest" href="./game.webmanifest" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23140d28' stroke='%23d6aa35' stroke-width='4'/%3E%3Cpath d='M17 17l8 31 7-17 7 17 8-31' fill='none' stroke='%23f3d36a' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <title>VanillaGL Engine</title>
+    <link rel="stylesheet" href="/src/login/login.css" />
+    <style>
+      html, body { margin: 0; height: 100%; background: #0b0820; overflow: hidden; }
+      #log {
+        display: none;
+        position: fixed; top: 84px; left: 12px; z-index: 10;
+        width: min(560px, calc(100vw - 24px)); max-height: 180px; overflow: hidden;
+        padding: 4px 6px; box-sizing: border-box; border-radius: 4px;
+        white-space: pre-wrap; color: rgba(215, 208, 238, 0.78); font: 11px/1.35 ui-monospace, monospace;
+        background: rgba(0, 0, 0, 0.24); text-shadow: 0 1px 2px #000; pointer-events: none;
+      }
+      #entity-debug {
+        display: none; position: fixed; left: 12px; bottom: 12px; z-index: 30;
+        width: min(430px, calc(100vw - 24px)); max-height: min(52vh, 560px); overflow: auto;
+        color: #e9eef4; background: rgba(9, 12, 16, 0.92); border: 1px solid rgba(255, 211, 77, 0.5);
+        border-radius: 8px; padding: 10px; box-sizing: border-box; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+        font: 12px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; backdrop-filter: blur(8px);
+      }
+      #entity-debug.visible { display: block; }
+      #entity-debug header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+      #entity-debug strong { color: #ffd34d; flex: 1; }
+      #entity-debug button {
+        color: #f3f5f7; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 5px; padding: 4px 7px; cursor: pointer;
+      }
+      #entity-debug pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    </style>
+  </head>
+  <body>
+    <div id="log">booting…</div>
+    <div id="glue-overlay"></div>
+    <aside id="entity-debug">
+      <header><strong id="entity-debug-title">Entity inspector</strong><button id="entity-debug-copy">Copy JSON</button><button id="entity-debug-close">Close</button></header>
+      <pre id="entity-debug-content"></pre>
+    </aside>
+    <script type="module">
+      // Bootstrap physical delivery before any gameplay module issues asset requests:
+      // 1) content hashes install immutable logical URL versioning,
+      // 2) Meshopt transparently upgrades mapped geometry JSON to binary sidecars,
+      // 3) the image resolver selects WebP/KTX2 and adds the same immutable digest.
+      const { initializeContentDelivery } = await import('/src/assets/content-delivery.ts');
+      await initializeContentDelivery();
+      const { initializeMeshoptRuntime } = await import('/src/assets/meshopt-runtime.ts');
+      await initializeMeshoptRuntime();
+      const { initializeAssetUrlResolver } = await import('/src/assets/asset-url-resolver.ts');
+      await initializeAssetUrlResolver();
+
+      const preview = new URLSearchParams(location.search).has('gameobject');
+      if (preview) void import('/src/gameobject-preview.ts');
+      else void import('/src/main.ts');
+    </script>
+  </body>
+</html>
