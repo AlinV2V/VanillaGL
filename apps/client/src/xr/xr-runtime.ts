@@ -125,7 +125,9 @@ export class XrRuntime {
     this.paintStatus();
   }
   private paintStatus() {
-    this.button.style.display = this.active || !this.deps.ready() ? 'none' : 'block';
+    // Desktop players without a headset never see VR UI; devicechange/focus re-detection reveals it when one connects.
+    const offerVr = this.supported || this.pending;
+    this.button.style.display = this.active || !this.deps.ready() || !offerVr ? 'none' : 'block';
     const ctx = this.button.getContext('2d')!;
     ctx.fillStyle = '#17212e'; ctx.fillRect(0, 0, 440, 52); ctx.strokeStyle = '#c7a35d'; ctx.strokeRect(1, 1, 438, 50);
     ctx.fillStyle = '#ffdc87'; ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
